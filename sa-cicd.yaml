@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cicdsample-cicd
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cicdsample-cicd
+rules:
+  - apiGroups:
+      - ""
+      - extensions
+      - batch
+      - apps
+      - gateway.kyma-project.io
+      - servicecatalog.k8s.io
+    resources:
+      - deployments
+      - replicasets
+      - pods
+      - jobs
+      - configmaps
+      - apirules
+      - serviceinstances
+      - servicebindings
+      - services
+      - secrets
+    verbs:
+      - create
+      - update
+      - patch
+      - delete
+      - get
+      - list
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cicdsample-cicd-binding
+subjects:
+  - kind: ServiceAccount
+    name: cicdsample-cicd
+roleRef:
+  kind: Role
+  name: cicdsample-cicd
+  apiGroup: rbac.authorization.k8s.io
